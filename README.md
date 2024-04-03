@@ -31,6 +31,7 @@ This GitHub Action let you run commands into [the slightly opinionated `devx` sh
 | `compiler-nix-name` | Specifies the GHC version to use. The version should be provided without dots, for example, GHC 8.10.7 should be written as `ghc8107`. | `ghc961` |
 | `minimal` | A Boolean input to decide whether to include `hlint` and HLS in the build. Set to `false` to include these tools. | `true` |
 | `iog` | Another Boolean input that, when set to `true`, will include `libsodum`, `libsecp256k1`, and `libblst` in the build. | `false` |
+| `iog-full` | Same than `-iog` bit also include `R` and `postgresql` | `false` |
 
 Here's how you might utilize this action in your workflow:
 
