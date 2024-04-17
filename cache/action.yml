@@ -25,12 +25,17 @@ runs:
     - name: Prep artifacts
       uses: devx {0}
       run: |
-        mkdir ~/.artifact
-        mv dist-newstyle ~/.artifact/
-        mv ~/.cabal-devx ~/.artifact/
-        mv ~/.cache      ~/.artifact/
+        ARTIFACT=$(mktemp -d)
+        mv dist-newstyle $ARTIFACT/
+        mv ~/.cabal-devx $ARTIFACT/
+        mv ~/.cache      $ARTIFACT/
+        # make sure we change into the directory before we go into upload-artifact
+        cd $ARTIFACT
     - name: Cache build artifacts (used to speed up GitHub Codespaces bootstrapping)
       uses: actions/upload-artifact@v4
       with:
         name: cache-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.ghc_version }}
-        path: ~/.artifact
+        path: |
+          dist-newstyle
+          .cabal-devx
+          .cache
