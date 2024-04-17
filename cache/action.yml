@@ -23,14 +23,10 @@ runs:
         cabal build all -j
         timeout 15m haskell-language-server --project-ghc-version || true
     - name: Prep artifacts
-      uses: devx {0}
+      shell: devx {0}
       run: |
-        ARTIFACT=$(mktemp -d)
-        mv dist-newstyle $ARTIFACT/
-        mv ~/.cabal-devx $ARTIFACT/
-        mv ~/.cache      $ARTIFACT/
-        # make sure we change into the directory before we go into upload-artifact
-        cd $ARTIFACT
+        mv ~/.cabal-devx ./
+        mv ~/.cache      ./
     - name: Cache build artifacts (used to speed up GitHub Codespaces bootstrapping)
       uses: actions/upload-artifact@v4
       with:
