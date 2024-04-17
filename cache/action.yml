@@ -28,5 +28,5 @@ runs:
         name: cache-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.ghc_version }}
         path: |
           ./dist-newstyle
-          $HOME/.cabal-devx
-          $HOME/.cache
+          ~/.cabal-devx
+          ~/.cache
