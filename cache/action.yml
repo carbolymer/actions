@@ -25,8 +25,8 @@ runs:
     - name: Prep artifacts
       shell: devx {0}
       run: |
-        mv ~/.cabal-devx ./
-        mv ~/.cache      ./
+        mkdir ./.cache-devx
+        mv ~/.cabal-devx/store  ./.cabal-devx/store
     - name: Cache build artifacts (used to speed up GitHub Codespaces bootstrapping)
       uses: actions/upload-artifact@v4
       with:
@@ -34,4 +34,3 @@ runs:
         path: |
           dist-newstyle
           .cabal-devx
-          .cache
