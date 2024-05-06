@@ -21,6 +21,41 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Install GHCup (Linux & MacOS)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        if ! type ghcup &>/dev/null; then
+          export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
+          export BOOTSTRAP_HASKELL_MINIMAL=1
+          export GHCUP_INSTALL_BASE_PREFIX=$HOME
+          ghcup_bin=$GHCUP_INSTALL_BASE_PREFIX/.ghcup/bin
+
+          # Install GHCup
+          curl --proto '=https' --tlsv1.2 -fsSL https://get-ghcup.haskell.org | sh > /dev/null 2>&1
+          echo "PATH=$ghcup_bin:$PATH" >> $GITHUB_ENV
+        fi
+
+    - name: Install GHCup (Windows)
+      if: runner.os == 'Windows'
+      shell: 'C:/msys64/usr/bin/bash.exe -e {0}'
+      run: |
+        if ! type ghcup &>/dev/null; then
+          export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
+          export BOOTSTRAP_HASKELL_MINIMAL=1
+          export GHCUP_INSTALL_BASE_PREFIX="/c/"
+          ghcup_bin=$GHCUP_INSTALL_BASE_PREFIX/ghcup/bin
+
+          # Install GHCup
+          curl --proto '=https' --tlsv1.2 -fsSL https://get-ghcup.haskell.org | sh > /dev/null 2>&1
+        fi
+
+    - name: Extend PATH (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        "PATH=C:\\ghcup\\bin;C:\\cabal\\bin;{0}" -f $env:PATH  >> $env:GITHUB_ENV
+
     - name: Setup GHC
       if: inputs.ghc-version != ''
       shell: bash
